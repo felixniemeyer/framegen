@@ -18,8 +18,11 @@ while(True):
         #cv2.imshow('frame', frame)
         break
     
-    cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    frame_float = cv2.normalize(frame, None, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
+    frame_float = cv2.normalize(
+        cv2.cvtColor(frame, cv2.COLOR_BGR2RGB), None, 
+        alpha=0, beta=1, 
+        norm_type=cv2.NORM_MINMAX, 
+        dtype=cv2.CV_32F)
 
     if (i % (train + test)) < train:
         train_images.append(frame_float)
