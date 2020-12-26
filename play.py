@@ -12,9 +12,9 @@ from utils import *
 imgRes = Resolution(48, 32)
 xxy = "{}x{}".format(imgRes.x, imgRes.y)
 
-out = cv2.VideoWriter('{}'.format(xxy), 
+out = cv2.VideoWriter('results/videos/{}.mp4'.format(xxy), 
     cv2.VideoWriter_fourcc('m','p','4','v'),
-    24, (1024, 768))
+    24, (imgRes.x, imgRes.y))
 if(not out.isOpened()):
     print("failed to open video writer")
     exit(0)
@@ -32,7 +32,9 @@ def end_handler(sig, frame):
 signal.signal(signal.SIGINT, end_handler)
 
 previous_z = np.random.rand(1,24)
+f = 1000
 for img in test_dataset.take(int(random.random()*1336)):
+    f = f+1
     mean, logvar = tf.split(encoder(img[0:1,:,:,:]), num_or_size_splits=2, axis=1)
     eps = tf.random.normal(shape=mean.shape)
     z = eps * tf.exp(logvar * .5) + mean
@@ -42,14 +44,17 @@ for img in test_dataset.take(int(random.random()*1336)):
         predictions = tf.sigmoid(decoder(weighted_z))[0].numpy()
         normalized_predictions = (predictions - np.min(predictions))/(np.max(predictions) - np.min(predictions)) # this set the range from 0 till 1
         frame = (normalized_predictions * 255).astype(np.uint8) # set is to a range from 0 till 255
-        print(frame.shape())
-        out.write(frame)
+        out.write(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
        # plt.imshow(predictions[0])
        # plt.show()
        # plt.clf()
         if end: 
             break
     previous_z = z
+    
+    if f % 10 == 0:
+        print(int((f-1000) * 32 / 24), "s video generated")
+    
     if end: 
         break
 
