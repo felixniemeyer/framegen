@@ -73,3 +73,7 @@ class CVAE(tf.keras.Model):
             probs = tf.sigmoid(logits)
             return probs
         return logits
+
+    def save_xcoders(self, prefick): 
+        self.encoder.save(prefick + "encoder")
+        self.decoder.save(prefick + "decoder")

@@ -11,7 +11,7 @@ import time
 from utils import * 
 from cvae import CVAE
 
-#imgRes = Resolution(24, 16)
+# imgRes = Resolution(24, 16)
 imgRes = Resolution(48, 32)
 latent_dim = 24
 batch_size = 16
@@ -73,7 +73,7 @@ model = CVAE(latent_dim, imgRes)
 
 # Pick a sample of the test set for generating output images
 assert batch_size >= num_examples_to_generate
-for test_batch in test_dataset.take(3): #random number for different pics 
+for test_batch in test_dataset.take(72): #random number for different pics 1337 is the las lol
     test_sample = test_batch[0:num_examples_to_generate, :, :, :]
 generate_and_save_images(model, 0, test_sample)
 
@@ -95,5 +95,4 @@ for epoch in range(1, epochs + 1):
         generate_and_save_images(model, epoch, test_sample)
         next = next * 2
 
-# hm, saving does not work 
-# model.save("models/{}x{}-{}-{}-{}".format(imgRes.x, imgRes.y, latent_dim, batch_size, epochs))
+model.save_xcoders("models/{}x{}-{}lat-{}batch-{}epoch/".format(imgRes.x, imgRes.y, latent_dim, batch_size, epochs))
