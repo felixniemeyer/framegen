@@ -32,14 +32,15 @@ def end_handler(sig, frame):
 signal.signal(signal.SIGINT, end_handler)
 
 previous_z = np.random.rand(1,24)
+interpolations = 32
 f = 1000
-for img in test_dataset.take(int(random.random()*1336)):
+for img in test_dataset.take(6):
     f = f+1
     mean, logvar = tf.split(encoder(img[0:1,:,:,:]), num_or_size_splits=2, axis=1)
     eps = tf.random.normal(shape=mean.shape)
     z = eps * tf.exp(logvar * .5) + mean
-    for i in range(32): 
-        p = i / 32
+    for i in range(interpolations): 
+        p = i / interpolations
         weighted_z =  p * z + (1-p) * previous_z
         predictions = tf.sigmoid(decoder(weighted_z))[0].numpy()
         normalized_predictions = (predictions - np.min(predictions))/(np.max(predictions) - np.min(predictions)) # this set the range from 0 till 1

@@ -18,6 +18,8 @@ batch_size = 16
 optimizer = tf.keras.optimizers.Adam(1e-4)
 epochs = 200
 num_examples_to_generate = 16
+
+save_model = False 
         
 element_spec = tf.TensorSpec(shape=(None, imgRes.y, imgRes.x, 3), dtype=tf.float32, name='frame')
 train_dataset = tf.data.experimental.load('data/0001-{}x{}.train.data'.format(imgRes.x, imgRes.y), element_spec, compression='GZIP')
@@ -95,4 +97,5 @@ for epoch in range(1, epochs + 1):
         generate_and_save_images(model, epoch, test_sample)
         next = next * 2
 
-model.save_xcoders("models/{}x{}-{}lat-{}batch-{}epoch/".format(imgRes.x, imgRes.y, latent_dim, batch_size, epochs))
+if save_model:
+    model.save_xcoders("models/{}x{}-{}lat-{}batch-{}epoch/".format(imgRes.x, imgRes.y, latent_dim, batch_size, epochs))
