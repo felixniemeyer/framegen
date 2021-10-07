@@ -27,18 +27,21 @@ Download or move some video to  `./original-video.mp4`.
 Scale it `./scale-vid.sh original-video.mp4 scaled-video.mp4 32`. This requires ffmpeg on your system. 32 is the y resolution of the outputted video. 
 
 Create a dataset from the video: `python create-dataset-from-vid.py`.
-(You may want to edit the params in the script if you have deviated from this walkthrough guide)
+You may want to edit the params in the script if you have deviated from this walkthrough guide.
 This creates a folder `data` with all the frames from the video packed into either the training dataset or a smaller test dataset. 
+
 
 ## training 
 
 Run the training `python train.py`.
-(You may want to edit the params in the script if you have deviated from this walkthrough guide)
+You may want to edit the params in the script if you have deviated from this walkthrough guide.
 This will create the model and write to `./models/...`.
 
 The filename will depend on the parameters you have chosen for training like the number of epochs. 
 
 During the training images will be saved to `./` that give an idea about the training progress.
+
+![example training progress](/example-training-progress.png?raw=true "example training progress")
 
 ## seeing results
 
