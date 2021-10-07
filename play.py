@@ -12,18 +12,18 @@ from utils import *
 imgRes = Resolution(48, 32)
 xxy = "{}x{}".format(imgRes.x, imgRes.y)
 
-out = cv2.VideoWriter('results/videos/{}.mp4'.format(xxy), 
+out = cv2.VideoWriter('result-video-{}.mp4'.format(xxy), 
     cv2.VideoWriter_fourcc('m','p','4','v'),
     24, (imgRes.x, imgRes.y))
 if(not out.isOpened()):
     print("failed to open video writer")
     exit(0)
 
-decoder = tf.keras.models.load_model('models/{}-24lat-16batch-200epoch/decoder'.format(xxy))
-encoder = tf.keras.models.load_model('models/{}-24lat-16batch-200epoch/encoder'.format(xxy))
+decoder = tf.keras.models.load_model('models/{}-24lat-16batch-10epoch/decoder'.format(xxy), compile=False)
+encoder = tf.keras.models.load_model('models/{}-24lat-16batch-10epoch/encoder'.format(xxy), compile=False)
 
 element_spec = tf.TensorSpec(shape=(None, imgRes.y, imgRes.x, 3), dtype=tf.float32, name='frame')
-test_dataset = tf.data.experimental.load('data/0001-{}.test.data'.format(xxy), element_spec, compression='GZIP')
+test_dataset = tf.data.experimental.load('data/{}.test.data'.format(xxy), element_spec, compression='GZIP')
 
 end = False
 def end_handler(sig, frame):

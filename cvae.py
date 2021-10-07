@@ -4,11 +4,11 @@ from tensorflow.keras import layers
 class CVAE(tf.keras.Model):
     """Convolutional variational autoencoder."""
 
-    def __init__(self, latent_dim, res, filters=32, xcoders_load_prefick=None):
+    def __init__(self, latent_dim, res, filters=32, xcoders_load_prefix=None):
         super(CVAE, self).__init__()
         
-        if xcoders_load_prefick != None: 
-            self.load_xcoders(xcoders_load_prefick)
+        if xcoders_load_prefix != None: 
+            self.load_xcoders(xcoders_load_prefix)
         else:
             (fcx, fcy, conv_layers) = self.calcLayerStuff(res.x, res.y)
             print("using {} conv layers".format(conv_layers))
@@ -77,10 +77,10 @@ class CVAE(tf.keras.Model):
             return probs
         return logits
 
-    def save_xcoders(self, prefick): 
-        self.encoder.save(prefick + "encoder")
-        self.decoder.save(prefick + "decoder")
+    def save_xcoders(self, prefix): 
+        self.encoder.save(prefix + "encoder")
+        self.decoder.save(prefix + "decoder")
         
-    def load_xcoders(self, prefick):
-        self.encoder = tf.keras.models.load_model(prefick + "encoder")
-        self.decoder = tf.keras.models.load_model(prefick + "decoder")
+    def load_xcoders(self, prefix):
+        self.encoder = tf.keras.models.load_model(prefix + "encoder", compile=False)
+        self.decoder = tf.keras.models.load_model(prefix + "decoder", compile=False)

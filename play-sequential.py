@@ -14,9 +14,9 @@ from cvae import CVAE
 imgRes = Resolution(48, 32)
 xxy = "{}x{}".format(imgRes.x, imgRes.y)
 
-vid = cv2.VideoCapture('videos/0001-{}x{}.mp4'.format(imgRes.x, imgRes.y))
+vid = cv2.VideoCapture('scaled-video.mp4'.format(imgRes.x, imgRes.y))
 
-out = cv2.VideoWriter('results/videos/{}.mp4'.format(xxy), 
+out = cv2.VideoWriter('result-video.mp4'.format(xxy), 
     cv2.VideoWriter_fourcc('m','p','4','v'),
     25, (imgRes.x, imgRes.y))
 if(not out.isOpened()):
@@ -25,8 +25,8 @@ if(not out.isOpened()):
 
 latent_vars = 24
 batch = 16
-epochs = 200
-model = CVAE(0,0,xcoders_load_prefick='models/{}-{}lat-{}batch-{}epoch/'.format(xxy, latent_vars, batch, epochs))
+epochs = 10
+model = CVAE(0,0,xcoders_load_prefix='models/{}-{}lat-{}batch-{}epoch/'.format(xxy, latent_vars, batch, epochs))
 
 sequence_of_representations = []
 

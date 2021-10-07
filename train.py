@@ -11,19 +11,21 @@ import time
 from utils import * 
 from cvae import CVAE
 
-# imgRes = Resolution(24, 16)
 imgRes = Resolution(48, 32)
 latent_dim = 24
 batch_size = 16
 optimizer = tf.keras.optimizers.Adam(1e-4)
-epochs = 200
+epochs = 10
 num_examples_to_generate = 16
 
-save_model = False 
+save_model = True
         
 element_spec = tf.TensorSpec(shape=(None, imgRes.y, imgRes.x, 3), dtype=tf.float32, name='frame')
-train_dataset = tf.data.experimental.load('data/0001-{}x{}.train.data'.format(imgRes.x, imgRes.y), element_spec, compression='GZIP')
-test_dataset = tf.data.experimental.load('data/0001-{}x{}.test.data'.format(imgRes.x, imgRes.y), element_spec, compression='GZIP')
+train_dataset = tf.data.experimental.load('data/{}x{}.train.data'.format(imgRes.x, imgRes.y), element_spec, compression='GZIP')
+test_dataset = tf.data.experimental.load('data/{}x{}.test.data'.format(imgRes.x, imgRes.y), element_spec, compression='GZIP')
+
+print("ehadio sda| POASD{PASOD K")
+print(train_dataset)
 
 def log_normal_pdf(sample, mean, logvar, raxis=1):
     log2pi = tf.math.log(2. * np.pi)
@@ -75,7 +77,7 @@ model = CVAE(latent_dim, imgRes)
 
 # Pick a sample of the test set for generating output images
 assert batch_size >= num_examples_to_generate
-for test_batch in test_dataset.take(72): #random number for different pics 1337 is the las lol
+for test_batch in test_dataset.take(72): 
     test_sample = test_batch[0:num_examples_to_generate, :, :, :]
 generate_and_save_images(model, 0, test_sample)
 
